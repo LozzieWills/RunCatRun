@@ -1,0 +1,34 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.math.Rectangle;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 19/01/2018.
+ */
+
+public class TutorialButton extends SuperButton {
+
+    public interface TutorialButtonListener {
+        void onTutorial();
+    }
+
+    private TutorialButtonListener listener;
+
+    public TutorialButton(Rectangle shape, TutorialButtonListener listener) {
+        super(shape);
+        this.listener = listener;
+    }
+
+    @Override
+    protected String getRegionName() {
+        return Constants.TUTORIAL_BUTTON_REGION_NAME;
+    }
+
+    @Override
+    public void onTouch() {
+        listener.onTutorial();
+    }
+
+}

@@ -1,0 +1,40 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#3A3D3A">
+    <!-- Video player -->
+
+    <VideoView
+        android:id="@+id/surface_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="top|center_horizontal"></VideoView>
+
+    <TextView
+        android:id="@+id/tutorialText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:fontFamily="casual"
+        android:text="Tap the screen to jump!"
+        android:textSize="36sp"
+        android:typeface="normal" />
+
+    <ImageButton
+        android:id="@+id/right_arrow_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|right"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/right_arrow_button" />
+
+    <ImageButton
+        android:id="@+id/left_arrow_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|left"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/left_arrow_button" />
+</FrameLayout>

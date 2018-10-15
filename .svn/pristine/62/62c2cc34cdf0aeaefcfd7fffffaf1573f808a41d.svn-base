@@ -1,0 +1,26 @@
+package uk.co.lawilliams.finalproject.runcatrun.utils;
+
+/**
+ * @author Lauren Williams
+ *         <p>
+ *         Allows LibGDX module to call methods from AndroidLauncher
+ */
+
+public interface AndroidInterface {
+
+    /**
+     * Allows LibGDX module to call showTutorial from AndroidLauncher
+     */
+    void showTutorial();
+
+    /**
+     * Allows LibGDX module to call showLeaderboard from AndroidLauncher
+     */
+    void showLeaderboards();
+
+    /**
+     * Allows LibGDX module to call showShop from AndroidLauncher
+     */
+    void showShop();
+
+}

@@ -1,0 +1,16 @@
+package uk.co.lawilliams.finalproject.runcatrun.box2d;
+
+import uk.co.lawilliams.finalproject.runcatrun.enums.UserDataType;
+
+/**
+ * Created by Lauren on 05/12/2017.
+ */
+
+public class GroundUserData extends UserData {
+
+    public GroundUserData() {
+        super();
+        userDataType = UserDataType.GROUND;
+    }
+
+}

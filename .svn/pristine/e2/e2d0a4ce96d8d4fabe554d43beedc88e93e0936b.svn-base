@@ -1,0 +1,140 @@
+package uk.co.lawilliams.finalproject.runcatrun.stages;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+
+import sun.rmi.runtime.Log;
+import uk.co.lawilliams.finalproject.runcatrun.actors.MenuBackground;
+import uk.co.lawilliams.finalproject.runcatrun.actors.Runner;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.LeaderboardButton;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.PlayButton;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.ShopButton;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.TutorialButton;
+import uk.co.lawilliams.finalproject.runcatrun.screens.GameScreen;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 19/01/2018.
+ */
+
+public class MenuStage extends Stage {
+
+    private PlayButton playButton;
+    private TutorialButton tutorialButton;
+    private ShopButton shopButton;
+    private LeaderboardButton leaderboardButton;
+
+    private OrthographicCamera camera;
+    private Game game;
+
+    private Vector3 touchPoint;
+
+    private static final int VIEWPORT_WIDTH = Constants.APP_WIDTH;
+    private static final int VIEWPORT_HEIGHT = Constants.APP_HEIGHT;
+
+    public MenuStage(Game game) {
+        super(new ScalingViewport(Scaling.stretch, VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
+                new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)));
+        this.game = game;
+        Gdx.input.setInputProcessor(this);
+        touchPoint = new Vector3();
+        setUpCamera();
+        setUpBackground();
+        setUpButtons();
+    }
+
+/*
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        translateScreenToWorldCoordinates(x,y);
+        return super.touchDown(x, y, pointer, button);
+    }
+*/
+
+    private void setUpCamera() {
+        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
+        camera.update();
+    }
+
+    private void setUpBackground() {
+        addActor(new MenuBackground());
+    }
+
+    private void setUpButtons() {
+        setUpPlay();
+        setUpTutorial();
+        setUpShop();
+        setUpLeaderboard();
+    }
+
+    private void setUpPlay() {
+        Rectangle playButtonShape = new Rectangle(getCamera().viewportWidth * 1 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        playButton = new PlayButton(playButtonShape, new MenuPlayButtonListener());
+        addActor(playButton);
+    }
+
+    private void setUpTutorial() {
+        Rectangle tutorialButtonShape = new Rectangle(getCamera().viewportWidth * 5 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        tutorialButton = new TutorialButton(tutorialButtonShape, new MenuTutorialButtonListener());
+        addActor(tutorialButton);
+    }
+
+    private void setUpShop() {
+        Rectangle shopButtonShape = new Rectangle(getCamera().viewportWidth * 9 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        shopButton = new ShopButton(shopButtonShape, new MenuShopButtonListener());
+        addActor(shopButton);
+    }
+
+    private void setUpLeaderboard() {
+        Rectangle leaderboardButtonShape = new Rectangle(getCamera().viewportWidth * 13 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        leaderboardButton = new LeaderboardButton(leaderboardButtonShape, new MenuLeaderboardButtonListener());
+        addActor(leaderboardButton);
+    }
+
+    public class MenuPlayButtonListener implements PlayButton.PlayButtonListener {
+        @Override
+        public void onPlay() {
+           game.setScreen(new GameScreen());
+        }
+    }
+
+    public class MenuTutorialButtonListener implements TutorialButton.TutorialButtonListener {
+        @Override
+        public void onTutorial() {
+
+        }
+    }
+
+    public class MenuLeaderboardButtonListener implements LeaderboardButton.LeaderboardButtonListener {
+        @Override
+        public void onLeaderboard() {
+
+        }
+    }
+
+    public class MenuShopButtonListener implements ShopButton.ShopButtonListener {
+        @Override
+        public void onShop() {
+
+        }
+    }
+
+
+
+}

@@ -1,0 +1,13 @@
+package uk.co.lawilliams.finalproject.runcatrun.enums;
+
+/**
+ * Created by Lauren on 10/01/2018.
+ */
+
+public enum GameState {
+
+    RUNNING,
+    PAUSED,
+    OVER
+
+}

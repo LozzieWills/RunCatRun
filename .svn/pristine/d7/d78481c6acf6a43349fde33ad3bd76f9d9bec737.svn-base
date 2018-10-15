@@ -1,0 +1,37 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+import uk.co.lawilliams.finalproject.runcatrun.utils.GameManager;
+
+/**
+ * Created by Lauren on 25/01/2018.
+ */
+
+public class FailOverlay extends Actor {
+
+    private final TextureRegion textureRegion;
+    private final Rectangle textureRegionBounds;
+    private int score;
+
+
+    public FailOverlay() {
+        score = GameManager.getInstance().getScore();
+        textureRegion = AssetManager.getTexture(Constants.FAIL_OVERLAY_TEXTURE_KEY);
+        textureRegionBounds = new Rectangle((Constants.APP_WIDTH / 2 - textureRegion.getRegionWidth() / 2), (Constants.APP_HEIGHT / 2 - textureRegion.getRegionHeight() / 2), textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y, textureRegionBounds.width,
+                textureRegionBounds.height);
+        AssetManager.getFont().draw(batch, "Score: " + score, 200, 275);
+    }
+
+}

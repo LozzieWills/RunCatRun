@@ -1,0 +1,13 @@
+package uk.co.lawilliams.finalproject.runcatrun.enums;
+
+/**
+ * Created by Lauren on 05/12/2017.
+ */
+
+public enum UserDataType {
+
+    FLOOR,
+    CAT,
+    ENEMY
+
+}

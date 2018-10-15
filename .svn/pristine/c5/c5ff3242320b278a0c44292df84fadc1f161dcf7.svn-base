@@ -1,0 +1,40 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.math.Rectangle;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 18/01/2018.
+ */
+
+public class PlayButton extends SuperButton {
+
+    public interface PlayButtonListener {
+        void onPlay();
+    }
+
+    private PlayButtonListener listener;
+
+    public PlayButton(Rectangle shape, PlayButtonListener listener) {
+        super(shape);
+        this.listener = listener;
+    }
+
+    @Override
+    protected String getRegionName() {
+        return Constants.PLAY_BUTTON_REGION_NAME;
+    }
+
+    @Override
+    public void onTouch() {
+        listener.onPlay();
+    }
+
+    @Override
+    protected String getPressedRegionName() {
+        return Constants.PLAY_BUTTON_PRESSED_REGION_NAME;
+    }
+
+
+}

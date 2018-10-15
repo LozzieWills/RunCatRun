@@ -1,0 +1,51 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Body;
+
+import uk.co.lawilliams.finalproject.runcatrun.box2d.EnemyUserData;
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 21/12/2017.
+ */
+
+public class Enemy extends GameActor {
+
+
+    private Animation animation;
+    private float stateTime;
+
+    public Enemy(Body body) {
+        super(body);
+        animation = AssetManager.getAnimation(getUserData().getAnimationKey());
+        stateTime = 0f;
+    }
+
+    @Override
+    public EnemyUserData getUserData() {
+        return (EnemyUserData) userData;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        body.setLinearVelocity(getUserData().getLinearVelocity());
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion tex = (TextureRegion)animation.getKeyFrame(stateTime, true);
+        batch.draw(tex, (screenRectangle.x - (screenRectangle.width * 0.1f)),
+                screenRectangle.y, screenRectangle.width * 1.5f, screenRectangle.height * 1.5f);
+    }
+
+
+}

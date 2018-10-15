@@ -1,0 +1,48 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 23/01/2018.
+ */
+
+public class MenuBackground extends Actor {
+
+    private final TextureRegion textureRegion;
+    private final Rectangle textureRegionBounds;
+    private Animation catAnimation;
+    private float animationTime;
+
+    //TODO: Change to singleton
+
+    public MenuBackground() {
+        textureRegion = AssetManager.getTexture(Constants.MENU_BACKGROUND_TEXTURE_KEY);
+        textureRegionBounds = new Rectangle(0, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+
+        catAnimation = AssetManager.getAnimation(Constants.CAT_RUNNING_ANIMATION_KEY);
+        animationTime = 0f;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y, textureRegionBounds.width,
+                textureRegionBounds.height);
+
+        animationTime += Gdx.graphics.getDeltaTime();
+        TextureRegion tex = (TextureRegion) catAnimation.getKeyFrame(animationTime, true);
+        batch.draw(tex, Constants.APP_WIDTH/2 - (tex.getRegionWidth()/2), Constants.APP_HEIGHT/2 - (tex.getRegionHeight()/2),
+                tex.getRegionWidth(), tex.getRegionHeight());
+    }
+
+}

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "333571852543",
+    "firebase_url": "https://runcatrun-56abd.firebaseio.com",
+    "project_id": "runcatrun-56abd",
+    "storage_bucket": "runcatrun-56abd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333571852543:android:ae6d16d4e4be921b",
+        "android_client_info": {
+          "package_name": "uk.co.lawilliams.finalproject.runcatrun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333571852543-5qllolfsr9of6bkav2qpf4dui4unm1jh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.co.lawilliams.finalproject.runcatrun",
+            "certificate_hash": "ae9e005c2dcc16c770506183328b7fff832877b7"
+          }
+        },
+        {
+          "client_id": "333571852543-e4go6ebipec1hfpam39uu8d9uv773brv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIolxPIMAs39re_NgeYku3pWPq7M3BPlY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333571852543-e4go6ebipec1hfpam39uu8d9uv773brv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

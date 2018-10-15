@@ -1,0 +1,48 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+import uk.co.lawilliams.finalproject.runcatrun.utils.GameManager;
+
+/**
+ * Created by Lauren on 25/01/2018.
+ */
+
+public class FailOverlay extends Actor {
+
+    private final TextureRegion textureRegion;
+    private final Rectangle textureRegionBounds;
+    private final FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private final BitmapFont font;
+    private final int score;
+
+
+    public FailOverlay() {
+        score = GameManager.getInstance().getScore();
+        generator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.FONT_PATH));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 48;
+        font = generator.generateFont(parameter);
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.FAIL_OVERLAY_PATH)));
+        textureRegionBounds = new Rectangle((Constants.APP_WIDTH / 2 - textureRegion.getRegionWidth() / 2), (Constants.APP_HEIGHT / 2 - textureRegion.getRegionHeight() / 2), textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y, textureRegionBounds.width,
+                textureRegionBounds.height);
+        font.draw(batch, "Score: " + score, 200, 275);
+    }
+
+
+}

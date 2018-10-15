@@ -1,0 +1,91 @@
+package uk.co.lawilliams.finalproject.runcatrun;
+
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.VideoView;
+
+public class TutorialActivityJump extends Activity implements View.OnClickListener {
+
+    private VideoView videoView;
+    private String uri;
+    private ImageButton previousButton;
+    private ImageButton nextButton;
+    private TextView tutorialText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        /**
+         * Usually functionality like below would require a worker thread, but setVideoURI already
+         * natively utilises threading.
+         */
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tutorial_jump);
+        previousButton = (ImageButton) findViewById(R.id.left_arrow_button);
+        nextButton = (ImageButton) findViewById(R.id.right_arrow_button);
+        tutorialText = (TextView) findViewById(R.id.tutorialText);
+        nextButton.setOnClickListener(this);
+        startJumpTutorial();
+
+    }
+
+    private void startJumpTutorial() {
+        uri = "android.resource://" + getPackageName() + "/" + R.raw.jump_tutorial_vid;
+        videoView = (VideoView) findViewById(R.id.video);
+        videoView.setVideoURI(Uri.parse(uri));
+        videoView.setVisibility(View.VISIBLE);
+        //Slight pause caused by buffering.
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+            }
+        });
+        videoView.start();
+        tutorialText.setText("Tap the screen to jump!");
+        previousButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void rightButtonPressed() {
+        videoView.stopPlayback();
+        Intent intent = new Intent(this, TutorialActivityEnemies.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.right_arrow_button:
+                rightButtonPressed();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        videoView.stopPlayback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoView.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        videoView.stopPlayback();
+    }
+
+}

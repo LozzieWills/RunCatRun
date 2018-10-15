@@ -1,0 +1,11 @@
+package uk.co.lawilliams.finalproject.runcatrun.utils;
+
+/**
+ * Created by Lauren on 20/02/2018.
+ */
+
+public interface AndroidInterface {
+
+    void showTutorial();
+
+}

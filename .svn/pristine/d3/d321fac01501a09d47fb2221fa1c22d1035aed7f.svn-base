@@ -1,0 +1,114 @@
+package uk.co.lawilliams.finalproject.runcatrun;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.GameManager;
+
+public class ShopActivity extends Activity {
+
+    TextView coinsText;
+    TextView infoText;
+    Button freeContinueButton;
+    Button difficultyButton;
+    Button highJumpButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_shop);
+
+        coinsText = (TextView) findViewById(R.id.coinsText);
+        infoText = (TextView) findViewById(R.id.infoText);
+
+        freeContinueButton = (Button) findViewById(R.id.freeContinueButton);
+        difficultyButton = (Button) findViewById(R.id.difficultyButton);
+        highJumpButton = (Button) findViewById(R.id.jumpButton);
+
+        freeContinueButton.setOnClickListener(clickListener);
+        difficultyButton.setOnClickListener(clickListener);
+        highJumpButton.setOnClickListener(clickListener);
+
+        updateCoinsText();
+    }
+
+    private void updateCoinsText() {
+        int coins = loadCoins();
+        coinsText.setText("Coins: " + coins);
+    }
+
+    private int loadCoins() {
+        return GameManager.getInstance().loadCoins();
+    }
+
+    private void saveCoins(int coins) {
+        GameManager.getInstance().saveCoins(coins);
+    }
+
+    private void purchasedFreeContinue() {
+        GameManager gm = GameManager.getInstance();
+        int continues = gm.loadFreeContinue();
+        gm.saveFreeContinue(continues + 1);
+    }
+
+    private void purchasedSlowDifficulty() {
+        GameManager gm = GameManager.getInstance();
+        int slows = gm.loadSlowerDifficulty();
+        gm.saveSlowerDifficulty(slows + 1);
+    }
+
+    private void purchasedHigherJump() {
+        GameManager gm = GameManager.getInstance();
+        int highs = gm.loadHigherJump();
+        gm.saveHigherJump(highs + 1);
+    }
+
+    View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int coins;
+            switch(v.getId()) {
+                case R.id.freeContinueButton:
+                    if (loadCoins() >= 10) {
+                        coins = loadCoins() - 10;
+                        saveCoins(coins);
+                        purchasedFreeContinue();
+                        infoText.setText("Free Continue purchased!");
+                        updateCoinsText();
+                    } else {
+                        infoText.setText("Need " + (10 - loadCoins()) + " more coins.");
+                    }
+                    break;
+                case R.id.difficultyButton:
+                    if (loadCoins() >= 15) {
+                        coins = loadCoins() - 15;
+                        saveCoins(coins);
+                        purchasedSlowDifficulty();
+                        infoText.setText("Slower Difficulty Increase purchased!");
+                        updateCoinsText();
+                    } else {
+                        infoText.setText("Need " + (15 - loadCoins()) + " more coins.");
+                    }
+                    break;
+                case R.id.jumpButton:
+                    if (loadCoins() >= 5) {
+                        coins = loadCoins() - 5;
+                        saveCoins(coins);
+                        purchasedHigherJump();
+                        infoText.setText("Jump Higher purchased!");
+                        updateCoinsText();
+                    } else {
+                        infoText.setText("Need " + (5 - loadCoins()) + " more coins.");
+                    }
+                    break;
+                default:
+                    break;
+            }
+            updateCoinsText();
+        }
+    };
+
+}

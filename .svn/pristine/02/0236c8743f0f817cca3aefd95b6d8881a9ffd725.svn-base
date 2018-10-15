@@ -1,0 +1,39 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.math.Rectangle;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 19/01/2018.
+ */
+
+public class ShopButton extends SuperButton {
+
+    public interface ShopButtonListener {
+        void onShop();
+    }
+
+    private ShopButtonListener listener;
+
+    public ShopButton(Rectangle shape, ShopButtonListener listener) {
+        super(shape);
+        this.listener = listener;
+    }
+
+    @Override
+    public String getRegionName() {
+        return Constants.SHOP_BUTTON_REGION_NAME;
+    }
+
+    @Override
+    public void onTouch() {
+        listener.onShop();
+    }
+
+    @Override
+    protected String getPressedRegionName() {
+        return Constants.SHOP_BUTTON_PRESSED_REGION_NAME;
+    }
+
+}

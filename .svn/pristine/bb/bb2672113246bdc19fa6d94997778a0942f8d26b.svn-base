@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="F:\AndroidStudioProjects\RunCatRun\android\assets"><file name="cat_1.png" path="F:\AndroidStudioProjects\RunCatRun\android\assets\cat_1.png"/></source><source path="F:\AndroidStudioProjects\RunCatRun\android\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="F:\AndroidStudioProjects\RunCatRun\android\src\debug\assets"/></dataSet></merger>

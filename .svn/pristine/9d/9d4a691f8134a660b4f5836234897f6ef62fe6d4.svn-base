@@ -1,0 +1,14 @@
+package uk.co.lawilliams.finalproject.runcatrun;
+
+import com.badlogic.gdx.Game;
+
+import uk.co.lawilliams.finalproject.runcatrun.screens.GameScreen;
+
+public class RunCatRun extends Game {
+
+	@Override
+	public void create () {
+        setScreen(new GameScreen());
+	}
+
+}

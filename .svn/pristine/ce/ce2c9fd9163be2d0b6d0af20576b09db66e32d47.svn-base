@@ -1,0 +1,47 @@
+enemies.png
+size: 61, 104
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+car_1
+  rotate: false
+  xy: 1, 82
+  size: 59, 21
+  orig: 59, 21
+  offset: 0, 0
+  index: 1
+car_2
+  rotate: false
+  xy: 1, 59
+  size: 59, 21
+  orig: 59, 21
+  offset: 0, 0
+  index: 2
+dog_1
+  rotate: false
+  xy: 1, 32
+  size: 29, 25
+  orig: 29, 25
+  offset: 0, 0
+  index: 1
+dog_2
+  rotate: false
+  xy: 23, 1
+  size: 29, 25
+  orig: 29, 25
+  offset: 0, 0
+  index: 2
+trash_1
+  rotate: false
+  xy: 1, 1
+  size: 20, 29
+  orig: 20, 29
+  offset: 0, 0
+  index: 1
+trash_2
+  rotate: false
+  xy: 1, 1
+  size: 20, 29
+  orig: 20, 29
+  offset: 0, 0
+  index: 2

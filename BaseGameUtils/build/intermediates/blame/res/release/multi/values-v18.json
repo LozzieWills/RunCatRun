@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "F:\\AndroidStudioProjects\\RunCatRun\\BaseGameUtils\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-v18\\values-v18.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 48,
+                    "endOffset": 99
+                },
+                "from": {
+                    "file": "C:\\Users\\Lauren\\.android\\build-cache\\4a19db81833e6432492c89a5d726f6da88f60aa6\\output\\res\\values-v18\\values-v18.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 291,
+                        "endColumn": 48,
+                        "endOffset": 335
+                    }
+                }
+            }
+        ]
+    }
+]

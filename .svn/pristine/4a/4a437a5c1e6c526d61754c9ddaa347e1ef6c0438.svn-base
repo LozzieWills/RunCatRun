@@ -1,0 +1,71 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors;
+
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Body;
+import uk.co.lawilliams.finalproject.runcatrun.box2d.FloorUserData;
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 05/12/2017.
+ */
+
+public class Floor extends GameActor{
+
+    private final TextureRegion textureRegion;
+    private Rectangle textureRegionBounds_1;
+    private Rectangle textureRegionBounds_2;
+    private int speed = 10;
+
+    //TODO: Change to singleton
+
+    public Floor(Body body) {
+        super(body);
+        textureRegion = AssetManager.getTexture(Constants.FLOOR_TEXTURE_KEY);
+        textureRegionBounds_1 = new Rectangle(0 - getUserData().getWidth() / 2, 0, getUserData().getWidth(),
+                getUserData().getHeight());
+        textureRegionBounds_2 = new Rectangle(getUserData().getWidth() / 2, 0, getUserData().getWidth(),
+                getUserData().getHeight());
+    }
+
+    @Override
+    public FloorUserData getUserData() {
+        return (FloorUserData) userData;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (leftBoundsReached(delta)) {
+            resetBounds();
+        } else {
+            updateXBounds(-delta);
+        }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(textureRegion, textureRegionBounds_1.x, screenRectangle.y, screenRectangle.getWidth(),
+                screenRectangle.getHeight());
+        batch.draw(textureRegion, textureRegionBounds_2.x, screenRectangle.y, screenRectangle.getWidth(),
+                screenRectangle.getHeight());
+    }
+
+    private boolean leftBoundsReached(float delta) {
+        return (textureRegionBounds_2.x - transformToScreen(delta * speed)) <= 0;
+    }
+
+    private void updateXBounds(float delta) {
+        textureRegionBounds_1.x += transformToScreen(delta * speed);
+        textureRegionBounds_2.x += transformToScreen(delta * speed);
+    }
+
+    private void resetBounds() {
+        textureRegionBounds_1 = textureRegionBounds_2;
+        textureRegionBounds_2 = new Rectangle(textureRegionBounds_1.x + screenRectangle.width, 0, screenRectangle.width,
+                screenRectangle.height);
+    }
+}

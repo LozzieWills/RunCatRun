@@ -1,0 +1,36 @@
+package uk.co.lawilliams.finalproject.runcatrun.box2d;
+
+import com.badlogic.gdx.math.Vector2;
+
+import uk.co.lawilliams.finalproject.runcatrun.enums.UserDataType;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 21/12/2017.
+ */
+
+public class EnemyUserData extends UserData {
+
+    private Vector2 linearVelocity;
+    private String animationKey;
+
+    public EnemyUserData(float width, float height, String animationKey) {
+        super(width, height);
+        userDataType = UserDataType.ENEMY;
+        linearVelocity = Constants.ENEMY_LINEAR_VELOCITY;
+        this.animationKey = animationKey;
+    }
+
+    public void setLinearVelocity(Vector2 linearVelocity) {
+        this.linearVelocity = linearVelocity;
+    }
+
+    public Vector2 getLinearVelocity() {
+        return linearVelocity;
+    }
+
+    public String getAnimationKey() {
+        return animationKey;
+    }
+
+}

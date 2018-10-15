@@ -1,0 +1,26 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
+/**
+ * Created by Lauren on 11/01/2018.
+ */
+
+public class SuperButton extends Button {
+
+    Rectangle shape;
+    Skin skin;
+
+    public SuperButton(Rectangle shape) {
+        this.shape = shape;
+        setWidth(shape.width);
+        setHeight(shape.height);
+        setBounds(shape.x, shape.y, shape.width, shape.height);
+     //   skin = new Skin();
+     //   skin.add
+
+    }
+
+}

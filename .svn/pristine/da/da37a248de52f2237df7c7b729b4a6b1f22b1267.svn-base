@@ -1,0 +1,227 @@
+package uk.co.lawilliams.finalproject.runcatrun.stages;
+
+import com.badlogic.gdx.physics.box2d.*;
+
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+
+import uk.co.lawilliams.finalproject.runcatrun.actors.GameBackground;
+import uk.co.lawilliams.finalproject.runcatrun.actors.Enemy;
+import uk.co.lawilliams.finalproject.runcatrun.actors.Floor;
+import uk.co.lawilliams.finalproject.runcatrun.actors.Cat;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.FailOverlay;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.RetryButton;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+import uk.co.lawilliams.finalproject.runcatrun.utils.GameManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.WorldUtils;
+import uk.co.lawilliams.finalproject.runcatrun.utils.BodyUtils;
+
+/**
+ * Created by Lauren on 04/12/2017.
+ */
+
+public class GameStage extends Stage implements ContactListener {
+
+    // This will be our viewport measurements while working with the debug renderer
+    private static final int VIEWPORT_WIDTH = Constants.APP_WIDTH;
+    private static final int VIEWPORT_HEIGHT = Constants.APP_HEIGHT;
+
+    private int jumpSuccessCount = 0;
+
+    private World world;
+    private Floor floor;
+    private Cat cat;
+
+    private final float TIME_STEP = 1 / 300f;
+    private float accumulator = 0f;
+
+    private Rectangle screen;
+
+    private Vector3 touchPoint;
+
+    private OrthographicCamera camera;
+    private GameBackground gameBackground = new GameBackground();
+
+    public GameStage()
+    {
+        super(new ScalingViewport(Scaling.stretch, VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
+                new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)));
+        GameManager.getInstance().setDifficulty(1);
+        setUpWorld();
+        setUpCamera();
+        setUpTouchControlAreas();
+    }
+
+    private void setUpTouchControlAreas() {
+        touchPoint = new Vector3();
+        screen = new Rectangle(0, 0, getCamera().viewportWidth,
+                getCamera().viewportHeight);
+        Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
+    public void beginContact(Contact contact) {
+
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
+
+        if ((BodyUtils.bodyIsCat(a) && BodyUtils.bodyIsEnemy(b)) ||
+                (BodyUtils.bodyIsEnemy(a) && BodyUtils.bodyIsCat(b))) {
+            cat.hit();
+            onFail();
+        } else if ((BodyUtils.bodyIsCat(a) && BodyUtils.bodyIsGround(b)) ||
+                (BodyUtils.bodyIsGround(a) && BodyUtils.bodyIsCat(b))) {
+            cat.landed();
+        }
+
+    }
+
+    private void onFail() {
+        GameManager.getInstance().saveScoreAndCoins(jumpSuccessCount);
+        GameManager.getInstance().setScore(jumpSuccessCount);
+        jumpSuccessCount = 0;
+        addActor(new FailOverlay());
+        Rectangle retryButtonShape = new Rectangle((VIEWPORT_WIDTH / 8) * 2, (VIEWPORT_HEIGHT / 16) * 3, 100, 100);
+        addActor(new RetryButton(retryButtonShape, new GameRetryButtonListener()));
+    }
+
+
+
+    private void setUpWorld() {
+        world = WorldUtils.createWorld();
+        world.setContactListener(this);
+        setUpGameBackground();
+        setUpFloor();
+        setUpCat();
+        createEnemy();
+    }
+
+    private void setUpFloor() {
+        floor = new Floor(WorldUtils.createGround(world));
+        addActor(floor);
+    }
+
+    private void setUpCat() {
+        cat = new Cat(WorldUtils.createCat(world));
+        addActor(cat);
+    }
+
+    private void setUpCamera() {
+        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
+        camera.update();
+    }
+
+    private void setUpGameBackground() {
+        addActor(gameBackground);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        Array<Body> bodies = new Array<Body>(world.getBodyCount());
+        world.getBodies(bodies);
+
+        for (Body body : bodies) {
+            update(body);
+        }
+
+        // Fixed timestep
+        accumulator += delta;
+
+        while (accumulator >= delta) {
+            world.step(TIME_STEP, 6, 2);
+            accumulator -= TIME_STEP;
+        }
+
+        //TODO: Implement interpolation
+
+    }
+
+    private void update(Body body) {
+        if (!BodyUtils.bodyInBounds(body)) {
+            if (BodyUtils.bodyIsEnemy(body) && !cat.isHit()) {
+                createEnemy();
+                jumpSuccessCount++;
+
+                if (jumpSuccessCount % 5 == 0) {
+                    GameManager.getInstance().increaseDifficulty();
+
+                    if (GameManager.getInstance().getDifficulty() <= 10) {
+                        gameBackground.increaseSpeed(20);
+                    }
+
+                }
+
+            }
+            world.destroyBody(body);
+        }
+    }
+
+    private void createEnemy() {
+        Enemy enemy = new Enemy(WorldUtils.createEnemy(world));
+        enemy.getUserData().setLinearVelocity(GameManager.getInstance().getEnemyDifficultySpeed());
+        addActor(enemy);
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+
+        // Need to get the actual coordinates
+        translateScreenToWorldCoordinates(x, y);
+
+        if (screenTouched(touchPoint.x, touchPoint.y)) {
+            cat.jump();
+        }
+
+        return super.touchDown(x, y, pointer, button);
+    }
+
+
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
+
+    private boolean screenTouched(float x, float y) {
+        return screen.contains(x, y);
+    }
+
+    private void translateScreenToWorldCoordinates(int x, int y) {
+        getCamera().unproject(touchPoint.set(x, y, 0));
+    }
+
+    public class GameRetryButtonListener implements RetryButton.RetryButtonListener {
+        @Override
+        public void onRetry() {
+            GameManager.getInstance().setDifficulty(1);
+            gameBackground.resetSpeed();
+            clear();
+            setUpWorld();
+            setUpCamera();
+            setUpTouchControlAreas();
+        }
+
+    }
+
+}
+

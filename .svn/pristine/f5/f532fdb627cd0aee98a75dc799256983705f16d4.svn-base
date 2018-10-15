@@ -1,0 +1,199 @@
+package uk.co.lawilliams.finalproject.runcatrun.stages;
+
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+
+import uk.co.lawilliams.finalproject.runcatrun.actors.MenuBackground;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.LeaderboardButton;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.PlayButton;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.ShopButton;
+import uk.co.lawilliams.finalproject.runcatrun.actors.UIElements.TutorialButton;
+import uk.co.lawilliams.finalproject.runcatrun.screens.GameScreen;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+import uk.co.lawilliams.finalproject.runcatrun.utils.GameManager;
+
+/**
+ * @author Lauren Williams
+ *         <p>
+ *         Stage handling the main menu
+ */
+
+public class MenuStage extends Stage {
+
+    private Stage stage = this;
+
+    private PlayButton playButton;
+    private TutorialButton tutorialButton;
+    private ShopButton shopButton;
+    private LeaderboardButton leaderboardButton;
+
+    private OrthographicCamera camera;
+    private Game game;
+
+    private static final int VIEWPORT_WIDTH = Constants.APP_WIDTH;
+    private static final int VIEWPORT_HEIGHT = Constants.APP_HEIGHT;
+
+    /**
+     * Constructor for MenuStage
+     *
+     * @param game RunCatRun game
+     */
+    public MenuStage(Game game) {
+        super(new ScalingViewport(Scaling.stretch, VIEWPORT_WIDTH, VIEWPORT_HEIGHT,
+                new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)));
+        this.game = game;
+        Gdx.input.setInputProcessor(this);
+        setUpCamera();
+        setUpBackground();
+        setUpButtons();
+    }
+
+    /**
+     * set up the camera
+     */
+    private void setUpCamera() {
+        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
+        camera.update();
+    }
+
+    /**
+     * set up the background image
+     */
+    private void setUpBackground() {
+        addActor(new MenuBackground());
+    }
+
+    /**
+     * set up the main menu buttons
+     */
+    private void setUpButtons() {
+        setUpPlay();
+        setUpTutorial();
+        setUpShop();
+        setUpLeaderboard();
+    }
+
+    /**
+     * set up the play button and add it to the main menu
+     */
+    private void setUpPlay() {
+        Rectangle playButtonShape = new Rectangle(getCamera().viewportWidth * 1 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        playButton = new PlayButton(playButtonShape, new MenuPlayButtonListener());
+        addActor(playButton);
+    }
+
+    /**
+     * set up the tutorial button and add it to the main menu
+     */
+    private void setUpTutorial() {
+        Rectangle tutorialButtonShape = new Rectangle(getCamera().viewportWidth * 5 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        tutorialButton = new TutorialButton(tutorialButtonShape, new MenuTutorialButtonListener());
+        addActor(tutorialButton);
+    }
+
+    /**
+     * set up the shop button and add it to the main menu
+     */
+    private void setUpShop() {
+        Rectangle shopButtonShape = new Rectangle(getCamera().viewportWidth * 9 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        shopButton = new ShopButton(shopButtonShape, new MenuShopButtonListener());
+        addActor(shopButton);
+    }
+
+    /**
+     * set up the leaderboard and add it to the main menu
+     */
+    private void setUpLeaderboard() {
+        Rectangle leaderboardButtonShape = new Rectangle(getCamera().viewportWidth * 13 / 16,
+                getCamera().viewportHeight / 8, getCamera().viewportWidth / 8,
+                getCamera().viewportWidth / 8);
+        leaderboardButton = new LeaderboardButton(leaderboardButtonShape, new MenuLeaderboardButtonListener());
+        addActor(leaderboardButton);
+    }
+
+    public class MenuPlayButtonListener implements PlayButton.PlayButtonListener {
+        @Override
+        public void onPlay() {
+            game.setScreen(new GameScreen());
+        }
+    }
+
+    /**
+     * The tutorial button listener
+     */
+    public class MenuTutorialButtonListener implements TutorialButton.TutorialButtonListener {
+        @Override
+        public void onTutorial() {
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                GameManager.getInstance().showTutorial();
+            } else {
+                Dialog dialog = new Dialog("Warning", new Skin(), "dialog") {
+                    public void result(Object obj) {
+                        System.out.println("result " + obj);
+                    }
+                };
+                dialog.text("Tutorial not supported");
+                dialog.button("OK", true);
+                dialog.show(stage);
+            }
+        }
+    }
+
+    /**
+     * the leaderboard button listener
+     */
+    public class MenuLeaderboardButtonListener implements LeaderboardButton.LeaderboardButtonListener {
+        @Override
+        public void onLeaderboard() {
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                GameManager.getInstance().showLeaderboards();
+            } else {
+                Dialog dialog = new Dialog("Warning", new Skin(), "dialog") {
+                    public void result(Object obj) {
+                        System.out.println("result " + obj);
+                    }
+                };
+                dialog.text("Leaderboards not supported");
+                dialog.button("OK", true);
+                dialog.show(stage);
+            }
+        }
+    }
+
+    /**
+     * The shop button listener
+     */
+    public class MenuShopButtonListener implements ShopButton.ShopButtonListener {
+        @Override
+        public void onShop() {
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                GameManager.getInstance().showShop();
+            } else {
+                Dialog dialog = new Dialog("Warning", new Skin(), "dialog") {
+                    public void result(Object obj) {
+                        System.out.println("result " + obj);
+                    }
+                };
+                dialog.text("Shop not supported");
+                dialog.button("OK", true);
+                dialog.show(stage);
+            }
+        }
+    }
+
+}

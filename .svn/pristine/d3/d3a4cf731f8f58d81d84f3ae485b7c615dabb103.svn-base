@@ -1,0 +1,6 @@
+app.version=1.0
+app.id=uk.co.lawilliams.finalproject.runcatrun
+app.mainclass=uk.co.lawilliams.finalproject.runcatrun.IOSLauncher
+app.executable=IOSLauncher
+app.build=1
+app.name=run-cat-run

@@ -1,0 +1,46 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors;
+
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetsManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+import uk.co.lawilliams.finalproject.runcatrun.utils.GameManager;
+
+/**
+ * @author Lauren Williams
+ *         <p>
+ *         Fail Overlay shown when cat hits enemy.
+ */
+public class FailOverlay extends Actor {
+
+    private final TextureRegion textureRegion;
+    private final Rectangle textureRegionBounds;
+    private int score;
+
+    /**
+     * Constructor for FailOverlay
+     */
+    public FailOverlay() {
+        score = GameManager.getInstance().getScore();
+        textureRegion = AssetsManager.getTexture(Constants.FAIL_OVERLAY_TEXTURE_KEY);
+        textureRegionBounds = new Rectangle((Constants.APP_WIDTH / 2 - textureRegion.getRegionWidth() / 2), (Constants.APP_HEIGHT / 2 - textureRegion.getRegionHeight() / 2), textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    }
+
+    /**
+     * Draw failoverlay.png and draw score
+     *
+     * @param batch       reference to texture
+     * @param parentAlpha parent's time since last frame
+     */
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y, textureRegionBounds.width,
+                textureRegionBounds.height);
+        AssetsManager.getFont().draw(batch, "Score: " + score, 200, 275);
+    }
+
+}

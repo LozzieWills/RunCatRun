@@ -1,0 +1,86 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Body;
+
+import uk.co.lawilliams.finalproject.runcatrun.box2d.CatUserData;
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetsManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 05/12/2017.
+ */
+
+public class Cat extends GameActor {
+
+    private boolean jumping;
+    private boolean hit;
+    private Animation runningAnimation;
+    private TextureRegion jumpingTexture;
+    private TextureRegion hitTexture;
+    private float stateTime;
+
+    //TODO: Change to singleton
+
+
+    public Cat(Body body) {
+        super(body);
+        runningAnimation = AssetsManager.getAnimation(Constants.CAT_RUNNING_ANIMATION_KEY);
+        hitTexture = AssetsManager.getTexture(Constants.CAT_HIT_TEXTURE_KEY);
+        jumpingTexture = AssetsManager.getTexture(Constants.CAT_JUMPING_TEXTURE_KEY);
+        stateTime = 0f;
+    }
+
+    @Override
+    public CatUserData getUserData() {
+        return (CatUserData) userData;
+    }
+
+    public void jump() {
+
+        if (!(jumping || hit)) {
+            body.applyLinearImpulse(getUserData().getJumpingLinearImpulse(), body.getWorldCenter(), true);
+            jumping = true;
+        }
+
+    }
+
+    public void landed() {
+        jumping = false;
+    }
+
+    public void hit() {
+        body.applyAngularImpulse(getUserData().getHitAngularImpulse(), true);
+        hit = true;
+    }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        if (hit) {
+            // When he's hit we also want to apply rotation if the body has been rotated
+            batch.draw(hitTexture, screenRectangle.x, screenRectangle.y, screenRectangle.width * 0.5f,
+                    screenRectangle.height * 0.5f, screenRectangle.width, screenRectangle.height, 1f, 1f,
+                    (float) Math.toDegrees(body.getAngle()));
+        } else if (jumping) {
+            batch.draw(jumpingTexture, screenRectangle.x, screenRectangle.y, screenRectangle.width,
+                    screenRectangle.height);
+        } else {
+            // Running
+            stateTime += Gdx.graphics.getDeltaTime();
+            TextureRegion tex = (TextureRegion)runningAnimation.getKeyFrame(stateTime, true);
+            batch.draw(tex, screenRectangle.x, screenRectangle.y,
+                    screenRectangle.getWidth(), screenRectangle.getHeight());
+
+        }
+    }
+
+}

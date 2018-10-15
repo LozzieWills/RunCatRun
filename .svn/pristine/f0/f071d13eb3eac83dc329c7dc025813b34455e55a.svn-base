@@ -1,0 +1,134 @@
+package uk.co.lawilliams.finalproject.runcatrun.utils;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.math.Vector2;
+
+import uk.co.lawilliams.finalproject.runcatrun.enums.GameState;
+
+/**
+ * @author Lauren Williams
+ *
+ * Singleton class handling the current state the game is in.
+ *
+ */
+
+public class GameManager implements AndroidInterface{
+
+    private static GameManager thisInstance;
+    private GameState gameState;
+    private int level;
+    private int score;
+    private AndroidInterface androidInterface;
+
+    public static GameManager getInstance() {
+        if (thisInstance == null) {
+            thisInstance = new GameManager();
+        }
+        return thisInstance;
+    }
+
+    private GameManager() {
+        gameState = GameState.OVER;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    private Preferences getPreferences() {
+        return Gdx.app.getPreferences(Constants.PREFERENCES_NAME);
+    }
+
+    public void setAndroidInterface(AndroidInterface androidInterface) {
+        this.androidInterface = androidInterface;
+    }
+
+    public void saveScoreAndCoins(int score) {
+        Preferences preferences = getPreferences();
+        if (score > preferences.getInteger(Constants.SCORE_PREFERENCE, 0)) {
+            preferences.putInteger(Constants.SCORE_PREFERENCE, score);
+        }
+        preferences.putInteger(Constants.COIN_PREFERENCE, Math.round(score/10));
+        preferences.flush();
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void resetScore() {
+        this.score = 0;
+    }
+
+    public void setDifficulty(int level) {
+        if (level <= 15) {
+            this.level = level;
+        }
+    }
+
+    public void increaseDifficulty() {
+        setDifficulty(getDifficulty() + 1);
+    }
+
+    public Vector2 getEnemyDifficultySpeed() {
+        Vector2 enemyDifficultySpeed;
+        int difficulty = getDifficulty();
+
+        switch(difficulty) {
+            case 1: enemyDifficultySpeed = Constants.ENEMY_LINEAR_VELOCITY;
+                break;
+            case 2: enemyDifficultySpeed = new Vector2(-12f, 0f);
+                break;
+            case 3: enemyDifficultySpeed = new Vector2(-14f, 0f);
+                break;
+            case 4: enemyDifficultySpeed = new Vector2(-16f, 0f);
+                break;
+            case 5: enemyDifficultySpeed = new Vector2(-18f, 0f);
+                break;
+            case 6: enemyDifficultySpeed = new Vector2(-20f, 0f);
+                break;
+            case 7: enemyDifficultySpeed = new Vector2(-22f, 0f);
+                break;
+            case 8: enemyDifficultySpeed = new Vector2(-24f, 0f);
+                break;
+            case 9: enemyDifficultySpeed = new Vector2(-26f, 0f);
+                break;
+            case 10: enemyDifficultySpeed = new Vector2(-28f, 0f);
+                break;
+            case 11: enemyDifficultySpeed = new Vector2(-30f, 0f);
+                break;
+            case 12: enemyDifficultySpeed = new Vector2(-32f, 0f);
+                break;
+            case 13: enemyDifficultySpeed = new Vector2(-34f, 0f);
+                break;
+            case 14: enemyDifficultySpeed = new Vector2(-36f, 0f);
+                break;
+            case 15: enemyDifficultySpeed = new Vector2(-38f, 0f);
+                break;
+            default: enemyDifficultySpeed = Constants.ENEMY_LINEAR_VELOCITY;
+                break;
+        }
+        return enemyDifficultySpeed;
+
+
+    }
+
+    public int getDifficulty() {
+        return this.level;
+    }
+
+    @Override
+    public void showTutorial() {
+        androidInterface.showTutorial();
+    }
+
+}

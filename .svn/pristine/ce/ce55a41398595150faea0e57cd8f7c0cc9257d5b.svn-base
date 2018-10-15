@@ -1,0 +1,27 @@
+package uk.co.lawilliams.finalproject.runcatrun.utils;
+
+import com.badlogic.gdx.physics.box2d.Body;
+import uk.co.lawilliams.finalproject.runcatrun.box2d.UserData;
+import uk.co.lawilliams.finalproject.runcatrun.enums.UserDataType;
+
+
+/**
+ * Created by Lauren on 05/12/2017.
+ */
+
+public class BodyUtils {
+
+    public static boolean bodyIsRunner(Body body) {
+        UserData userData = (UserData) body.getUserData();
+
+        return userData != null && userData.getUserDataType() == UserDataType.RUNNER;
+    }
+
+    public static boolean bodyIsGround(Body body) {
+        UserData userData = (UserData) body.getUserData();
+
+        return userData != null && userData.getUserDataType() == UserDataType.GROUND;
+    }
+
+
+}

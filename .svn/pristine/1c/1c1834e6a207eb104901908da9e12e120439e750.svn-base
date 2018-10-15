@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lauren\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.9.7\ad5b0c9246497c2141580f26ad82f51ecc9879e5\gdx-box2d-1.9.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="ad5b0c9246497c2141580f26ad82f51ecc9879e5">
+        <dex dex="F:\AndroidStudioProjects\RunCatRun\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.9.7_69d88d78c86ed6ae8b9c1bee7810e5accd6b07e8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="F:\AndroidStudioProjects\RunCatRun\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f2ee42846e84ca35128cce30309b7d2c0d8cba71">
+        <dex dex="F:\AndroidStudioProjects\RunCatRun\android\build\intermediates\pre-dexed\debug\core-1.0_7257bd59214ffacf340fbb5ea32694ff6943c25f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lauren\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.9.7\8a021ba0bb6555c25dfc272697d379215aa05ed1\gdx-1.9.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8a021ba0bb6555c25dfc272697d379215aa05ed1">
+        <dex dex="F:\AndroidStudioProjects\RunCatRun\android\build\intermediates\pre-dexed\debug\gdx-1.9.7_1c355ce09e656239eb4d7aa6dc9ebe634e982907.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lauren\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.9.7\884a964d5a09643269390bdc4d30fc7bf8b0b9eb\gdx-backend-android-1.9.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="884a964d5a09643269390bdc4d30fc7bf8b0b9eb">
+        <dex dex="F:\AndroidStudioProjects\RunCatRun\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.9.7_25a9965829a8bf31fe07867ddd026d6227429d7a.jar" />
+    </item>
+
+</items>

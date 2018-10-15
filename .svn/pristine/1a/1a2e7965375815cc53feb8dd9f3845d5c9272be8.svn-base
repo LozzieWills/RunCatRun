@@ -1,0 +1,39 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.math.Rectangle;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 18/01/2018.
+ */
+
+public class LeaderboardButton extends SuperButton {
+
+    public interface LeaderboardButtonListener {
+        void onLeaderboard();
+    }
+
+    private LeaderboardButtonListener listener;
+
+    public LeaderboardButton(Rectangle shape, LeaderboardButtonListener listener) {
+        super(shape);
+        this.listener = listener;
+    }
+
+    @Override
+    protected String getRegionName() {
+        return Constants.LEADERBOARD_BUTTON_REGION_NAME;
+    }
+
+    @Override
+    public void onTouch() {
+        listener.onLeaderboard();
+    }
+
+    @Override
+    protected String getPressedRegionName() {
+        return Constants.LEADERBOARD_BUTTON_PRESSED_REGION_NAME;
+    }
+
+}

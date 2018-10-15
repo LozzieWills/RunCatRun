@@ -1,0 +1,28 @@
+[
+    {
+        "outputFile": "F:\\AndroidStudioProjects\\RunCatRun\\BaseGameUtils\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 6,
+                    "endColumn": 13,
+                    "endOffset": 325
+                },
+                "from": {
+                    "file": "C:\\Users\\Lauren\\.android\\build-cache\\4a19db81833e6432492c89a5d726f6da88f60aa6\\output\\res\\values-hdpi\\values-hdpi.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 297,
+                        "endLine": 8,
+                        "endColumn": 13,
+                        "endOffset": 567
+                    }
+                }
+            }
+        ]
+    }
+]

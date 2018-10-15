@@ -1,0 +1,144 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors;
+
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.AssetsManager;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 26/12/2017.
+ */
+
+public class GameBackground extends Actor {
+
+    private final TextureRegion textureRegion_1;
+    private final TextureRegion textureRegion_2;
+    private final TextureRegion textureRegion_3;
+    private final TextureRegion textureRegion_4;
+    private Rectangle textureRegionBounds1_1;
+    private Rectangle textureRegionBounds2_1;
+    private Rectangle textureRegionBounds1_2;
+    private Rectangle textureRegionBounds2_2;
+    private Rectangle textureRegionBounds1_3;
+    private Rectangle textureRegionBounds2_3;
+    private int speed_1 = 200;
+    private int speed_2 = 120;
+    private int speed_3 = 160;
+
+    //TODO: refactor and make Background superclass, with 3 background child classes containing the layers
+
+    public GameBackground() {
+        textureRegion_1 = AssetsManager.getTexture(Constants.BACKGROUND_1_TEXTURE_KEY);
+        textureRegion_2 = AssetsManager.getTexture(Constants.BACKGROUND_2_TEXTURE_KEY);
+        textureRegion_3 = AssetsManager.getTexture(Constants.BACKGROUND_3_TEXTURE_KEY);
+        textureRegion_4 = AssetsManager.getTexture(Constants.BACKGROUND_4_TEXTURE_KEY);
+        textureRegionBounds1_1 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        textureRegionBounds2_1 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        textureRegionBounds1_2 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        textureRegionBounds2_2 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        textureRegionBounds1_3 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        textureRegionBounds2_3 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+
+    }
+
+    @Override
+    public void act(float delta) {
+        if (leftBoundsReached_1(delta)) {
+            resetBounds_1();
+        } else if (leftBoundsReached_2(delta)) {
+            resetBounds_2();
+        } else if (leftBoundsReached_3(delta)) {
+            resetBounds_3();
+        } else {
+            updateXBounds_1(-delta);
+            updateXBounds_2(-delta);
+            updateXBounds_3(-delta);
+        }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        batch.draw(textureRegion_1, textureRegionBounds1_1.x, textureRegionBounds1_1.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_1, textureRegionBounds2_1.x, textureRegionBounds2_1.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_2, textureRegionBounds1_2.x, textureRegionBounds1_2.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_2, textureRegionBounds2_2.x, textureRegionBounds2_2.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_3, textureRegionBounds1_3.x, textureRegionBounds1_3.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_3, textureRegionBounds2_3.x, textureRegionBounds2_3.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_4, textureRegionBounds1_1.x, textureRegionBounds1_1.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+        batch.draw(textureRegion_4, textureRegionBounds2_1.x, textureRegionBounds2_1.y, Constants.APP_WIDTH,
+                Constants.APP_HEIGHT);
+    }
+
+    private boolean leftBoundsReached_1(float delta) {
+        return (textureRegionBounds2_1.x - (delta * speed_1)) <= 0;
+    }
+
+    private void updateXBounds_1(float delta) {
+        textureRegionBounds1_1.x += delta * speed_1;
+        textureRegionBounds2_1.x += delta * speed_1;
+    }
+
+    private void resetBounds_1() {
+        textureRegionBounds1_1 = textureRegionBounds2_1;
+        textureRegionBounds2_1 = new Rectangle(Constants.APP_WIDTH, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+    }
+
+    private boolean leftBoundsReached_2(float delta) {
+        return (textureRegionBounds2_2.x - (delta * speed_2)) <= 0;
+    }
+
+    private void updateXBounds_2(float delta) {
+        textureRegionBounds1_2.x += delta * speed_2;
+        textureRegionBounds2_2.x += delta * speed_2;
+    }
+
+    private void resetBounds_2() {
+        textureRegionBounds1_2 = textureRegionBounds2_2;
+        textureRegionBounds2_2 = new Rectangle(Constants.APP_WIDTH, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+    }
+
+    private boolean leftBoundsReached_3(float delta) {
+        return (textureRegionBounds2_3.x - (delta * speed_3)) <= 0;
+    }
+
+    private void updateXBounds_3(float delta) {
+        textureRegionBounds1_3.x += delta * speed_3;
+        textureRegionBounds2_3.x += delta * speed_3;
+    }
+
+    private void resetBounds_3() {
+        textureRegionBounds1_3 = textureRegionBounds2_3;
+        textureRegionBounds2_3 = new Rectangle(Constants.APP_WIDTH, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+    }
+
+    public void increaseSpeed(int increase) {
+        speed_1 = speed_1 + increase;
+        speed_2 = speed_2 + increase;
+        speed_3 = speed_3 + increase;
+    }
+
+    public void resetSpeed() {
+        speed_1 = 200;
+        speed_2 = 120;
+        speed_3 = 160;
+    }
+
+    public void setSpeed(int speed) {
+        speed_1 = speed;
+        speed_2 = speed;
+        speed_3 = speed;
+    }
+
+
+}

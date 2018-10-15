@@ -1,0 +1,17 @@
+package uk.co.lawilliams.finalproject.runcatrun.desktop;
+
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+
+import uk.co.lawilliams.finalproject.runcatrun.RunCatRun;
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+public class DesktopLauncher {
+	public static void main (String[] arg) {
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = Constants.APP_WIDTH;
+		config.height = Constants.APP_HEIGHT;
+		new LwjglApplication(new RunCatRun(), config);
+	}
+}

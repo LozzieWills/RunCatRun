@@ -1,0 +1,38 @@
+package uk.co.lawilliams.finalproject.runcatrun;
+
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Activity;
+import android.widget.VideoView;
+
+public class TutorialActivity extends Activity {
+
+    VideoView videoView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        /**
+         * Usually functionality like below would require a worker thread, but setVideoURI already
+         * natively utilises threading.
+         */
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tutorial);
+        String uri = "android.resource://" + getPackageName() + "/" + R.raw.jump_tutorial_vid;
+        videoView = (VideoView) this.findViewById(R.id.surface_view);
+        videoView.setVideoURI(Uri.parse(uri));
+        videoView.requestFocus();
+        //Slight pause caused by buffering.
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+            }
+        });
+        videoView.start();
+
+    }
+
+}

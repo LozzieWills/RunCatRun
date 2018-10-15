@@ -1,0 +1,129 @@
+package uk.co.lawilliams.finalproject.runcatrun;
+
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.VideoView;
+
+public class TutorialActivity extends Activity implements View.OnClickListener {
+
+    private VideoView videoView;
+    private String uri;
+    private ImageButton previousButton;
+    private ImageButton nextButton;
+    private ImageView imageView;
+    private TextView tutorialText;
+    private int sequenceNo;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        /**
+         * Usually functionality like below would require a worker thread, but setVideoURI already
+         * natively utilises threading.
+         */
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tutorial);
+        previousButton = (ImageButton) findViewById(R.id.left_arrow_button);
+        nextButton = (ImageButton) findViewById(R.id.right_arrow_button);
+        tutorialText = (TextView) findViewById(R.id.tutorialText);
+        sequenceNo = 0;
+        startJumpTutorial();
+
+        nextButton.setOnClickListener(this);
+        previousButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
+    private void startJumpTutorial() {
+        imageView = null;
+        uri = "android.resource://" + getPackageName() + "/" + R.raw.jump_tutorial_vid;
+        videoView = (VideoView) findViewById(R.id.video);
+        videoView.setVideoURI(Uri.parse(uri));
+        videoView.setVisibility(View.VISIBLE);
+        //Slight pause caused by buffering.
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+            }
+        });
+        tutorialText.setText("Tap the screen to jump!");
+        videoView.start();
+        previousButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void stopJumpTutorial() {
+        videoView.stopPlayback();
+        videoView.setVisibility(View.GONE);
+        videoView = null;
+    }
+
+    private void startEnemyTutorial() {
+        imageView = (ImageView) findViewById(R.id.image);
+        imageView.setVisibility(View.VISIBLE);
+        previousButton.setVisibility(View.VISIBLE);
+        tutorialText.setText("Jump over these enemies!");
+    }
+
+    private void stopEnemyTutorial() {
+        imageView.setVisibility(View.GONE);
+        imageView = null;
+    }
+
+    private void changeToSequence() {
+        switch (sequenceNo) {
+            case 0:
+                startJumpTutorial();
+                break;
+            case 1:
+                startEnemyTutorial();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void stopSequence() {
+        switch (sequenceNo) {
+            case 0:
+                stopJumpTutorial();
+                break;
+            case 1:
+                stopEnemyTutorial();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.right_arrow_button:
+                stopSequence();
+                sequenceNo++;
+                changeToSequence();
+                break;
+            case R.id.left_arrow_button:
+                stopSequence();
+                sequenceNo--;
+                changeToSequence();
+                break;
+            default:
+                break;
+        }
+    }
+
+}

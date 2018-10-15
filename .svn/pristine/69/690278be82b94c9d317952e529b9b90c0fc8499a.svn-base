@@ -1,0 +1,91 @@
+package uk.co.lawilliams.finalproject.runcatrun;
+
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.View;
+import android.widget.VideoView;
+
+public class TutorialActivityJump extends Activity {
+
+    private VideoView videoView;
+    private String uriPath;
+    private View view;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        /**
+         * Usually functionality like below would require a worker thread, but setVideoURI already
+         * natively utilises threading.
+         */
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tutorial_jump);
+        view = this.findViewById(android.R.id.content);
+
+        view.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                rightGesture();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                leftGesture();
+            }
+        });
+
+        startJumpTutorial();
+
+    }
+
+    private void startJumpTutorial() {
+        uriPath = "android.resource://" + getPackageName() + "/" + R.raw.jump_tutorial_vid;
+        videoView = (VideoView) findViewById(R.id.video);
+        Uri uri = Uri.parse(uriPath);
+        videoView.setVideoURI(uri);
+        videoView.setVisibility(View.VISIBLE);
+
+        //Slight pause caused by buffering.
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+                videoView.start();
+            }
+        });
+
+    }
+
+    private void rightGesture() {
+        videoView.stopPlayback();
+        Intent intent = new Intent(this, TutorialActivityEnemies.class);
+        startActivity(intent);
+    }
+
+    private void leftGesture() {
+        onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        videoView.stopPlayback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoView.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        videoView.stopPlayback();
+    }
+
+}

@@ -1,0 +1,34 @@
+package uk.co.lawilliams.finalproject.runcatrun.actors.UIElements;
+
+import com.badlogic.gdx.math.Rectangle;
+
+import uk.co.lawilliams.finalproject.runcatrun.utils.Constants;
+
+/**
+ * Created by Lauren on 25/01/2018.
+ */
+
+public class RetryButton extends SuperButton {
+
+    public interface RetryButtonListener {
+        void onRetry();
+    }
+
+    private RetryButton.RetryButtonListener listener;
+
+    public RetryButton(Rectangle shape, RetryButton.RetryButtonListener listener) {
+        super(shape);
+        this.listener = listener;
+    }
+
+    @Override
+    protected String getRegionName() {
+        return Constants.RETRY_BUTTON_REGION_NAME;
+    }
+
+    @Override
+    public void onTouch() {
+        listener.onRetry();
+    }
+
+}
